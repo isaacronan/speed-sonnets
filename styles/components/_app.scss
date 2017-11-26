@@ -1,0 +1,32 @@
+.app {
+  padding: 10px;
+  padding-right: 0px;
+  width: calc(100% - 10px);
+  height: calc(100% - 20px);
+  font-family: sans-serif;
+  color: $dark-1;
+  background-color: $light-2;
+
+  * {
+    outline-style: none;
+  }
+
+  h1 {
+    font-size: $primary;
+    margin-bottom: 10px;
+    color: $dark-1;
+  }
+
+  button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border-style: 1px solid $dark-1;
+    margin-bottom: 20px;
+    color: $dark-1;
+    background-color: $light-2;
+    cursor: pointer;
+    &:hover {
+      background-color: $light-1;
+    }
+  }
+}

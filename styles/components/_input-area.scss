@@ -1,0 +1,12 @@
+.input-area {
+  input {
+    margin-bottom: 20px;
+    border-style: none;
+    background-color: transparent;
+    color: $dark-1;
+    font-size: $primary;
+    &::placeholder {
+      color: $light-1;
+    }
+  }
+}
