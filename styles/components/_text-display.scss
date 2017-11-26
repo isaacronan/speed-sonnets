@@ -1,0 +1,11 @@
+.text-display {
+  font-size: $secondary;
+  margin-bottom: 10px;
+  color: $dark-1;
+  b {
+    color: $dark-2;
+  }
+  .correct {
+    color: $dark-1;
+  }
+}

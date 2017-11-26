@@ -1,0 +1,21 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+html {
+  font-size: 10px;
+}
+
+@import 'constants/colors';
+@import 'constants/fonts';
+
+@import 'components/app';
+@import 'components/input-area';
+@import 'components/stats';
+@import 'components/text-display';
+@import 'components/text-options';
