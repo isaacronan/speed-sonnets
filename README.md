@@ -1,3 +1,3 @@
-# react-boilerplate
+# speed-sonnets
 
-This is a boilerplate project structure and configuration for a React app.
+This is typing speed test to demonstrate Redux and Thunk.
