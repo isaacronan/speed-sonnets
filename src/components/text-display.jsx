@@ -10,12 +10,32 @@ class TextDisplay extends React.Component {
     this.props.goToOptions();
   }
 
-  formattedSentence = () => {
+  previousLines = () => {
     return (
       <div>
+        {this.props.lines.slice(0, this.props.currentLineIndex).map((line, index) => {
+          return <p key={index}>{line}</p>
+        })}
+      </div>
+    )
+  }
+
+  currentLine = () => {
+    return (
+      <p className="current-line">
         {this.props.words.slice(0, this.props.currentWordIndex).join(' ')}
         <b className={this.props.inputMatchesWord ? 'correct': ''}> {this.props.words[this.props.currentWordIndex]} </b>
         {this.props.words.slice(this.props.currentWordIndex + 1).join(' ')}
+      </p>
+    )
+  }
+
+  nextLines = () => {
+    return (
+      <div>
+        {this.props.lines.slice(this.props.currentLineIndex + 1).map((line, index) => {
+          return <p key={index}>{line}</p>
+        })}
       </div>
     )
   }
@@ -25,7 +45,9 @@ class TextDisplay extends React.Component {
       <div className="text-display">
         <h1>{`Sonnet ${this.props.sonnetNumber}`}</h1>
         <button onClick={this.onBackClick}>Back</button>
-        {this.formattedSentence()}
+        {this.previousLines()}
+        {this.currentLine()}
+        {this.nextLines()}
       </div>
     );
   }
@@ -36,7 +58,9 @@ const mapStateToProps = state => {
     sonnetNumber: state.sonnetNumber,
     words: state.words,
     currentWordIndex: state.currentWordIndex,
-    inputMatchesWord: state.inputMatchesWord
+    inputMatchesWord: state.inputMatchesWord,
+    lines: state.lines,
+    currentLineIndex: state.currentLineIndex
   }
 }
 
