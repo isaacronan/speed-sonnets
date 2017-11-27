@@ -1,4 +1,5 @@
 import {
+  LOAD_SONNETS,
   SELECT_SONNET,
   UPDATE_INPUT,
   START_TIMER,
@@ -8,6 +9,7 @@ import {
 import moment from 'moment';
 
 let initialState = {
+  sonnets: [],
   sonnetNumber: '',
   lines: [],
   currentLineIndex: 0,
@@ -36,6 +38,10 @@ let initialState = {
 
 export function rootReducer(state = initialState, action = {}) {
   switch(action.type) {
+    case LOAD_SONNETS:
+      return Object.assign({}, state, {
+        sonnets: action.sonnets
+      });
     case SELECT_SONNET:
       return Object.assign({}, state, {
         sonnetNumber: action.sonnet.numeral,
