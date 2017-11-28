@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { goToOptions } from '../core/actions/actions';
+import { currentSonnetNumeral, elapsedTime, wpm, accuracy } from '../core/selectors/selectors';
 
 class Stats extends React.Component {
 
@@ -12,7 +13,7 @@ class Stats extends React.Component {
   render() {
     return (
       <div className="stats">
-        <h1>{`Typing stats for Sonnet ${this.props.sonnetNumber}`}</h1>
+        <h1>{`Typing stats for Sonnet ${this.props.currentSonnetNumeral}`}</h1>
         <button onClick={this.onBackClick}>Back</button>
         <p><b>Time: </b>{this.props.elapsedTime}</p>
         <p><b>WPM: </b>{this.props.wpm}</p>
@@ -24,10 +25,10 @@ class Stats extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    elapsedTime: state.elapsedTime,
-    wpm: state.wpm,
-    accuracy: state.accuracy,
-    sonnetNumber: state.sonnetNumber
+    currentSonnetNumeral: currentSonnetNumeral(state),
+    elapsedTime: elapsedTime(state),
+    wpm: wpm(state),
+    accuracy: accuracy(state)
   }
 }
 
