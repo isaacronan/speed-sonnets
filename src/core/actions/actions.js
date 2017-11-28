@@ -50,13 +50,10 @@ export function increment() {
   }
 }
 
-export function submitInput(inputMatchesWord, isLastWord, isLastLine) {
+export function submitInput() {
   return {
     type: SUBMIT_INPUT,
-    intervalID,
-    inputMatchesWord,
-    isLastWord,
-    isLastLine
+    intervalID
   };
 }
 
