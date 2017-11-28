@@ -10,30 +10,15 @@ import moment from 'moment';
 
 let initialState = {
   sonnets: [],
-  sonnetNumber: '',
-  lines: [],
+  currentSonnetIndex: null,
   currentLineIndex: 0,
-  get currentLine() {
-    return this.lines.length ? this.lines[this.currentLineIndex] : '';
-  },
-  get words() {
-    return this.currentLine.split(' ');
-  },
   currentWordIndex: 0,
-  get currentWord() {
-    return this.words[this.currentWordIndex];
-  },
   input: '',
-  get inputMatchesWord() {
-    return this.input === this.currentWord;
-  },
   timerIsRunning: false,
   startTime: 0,
-  elapsedTime: moment.utc(0).format('mm:ss.S'),
-  correctWords: 0,
+  currentTime: 0,
   totalWords: 0,
-  wpm: '',
-  accuracy: ''
+  correctWords: 0
 }
 
 export function rootReducer(state = initialState, action = {}) {
@@ -44,86 +29,51 @@ export function rootReducer(state = initialState, action = {}) {
       });
     case SELECT_SONNET:
       return Object.assign({}, state, {
-        sonnetNumber: action.sonnet.numeral,
-        lines: action.sonnet.lines,
-        currentLineIndex: 0,
-        get currentLine() {
-          return this.lines[this.currentLineIndex]
-        },
-        get words() {
-          return this.currentLine.split(' ');
-        },
-        currentWordIndex: 0,
-        get currentWord() {
-          return this.words[this.currentWordIndex]
-        },
-        input: '',
-        get inputMatchesWord() {
-          return this.input === this.currentWord;
-        }
+        currentSonnetIndex: action.index
       });
     case UPDATE_INPUT:
       return Object.assign({}, state, {
-        input: action.input,
-        get inputMatchesWord() {
-          return this.input === state.currentWord;
-        }
+        input: action.input
       });
     case START_TIMER:
       return Object.assign({}, state, {
         timerIsRunning: true,
         startTime: moment(),
-        elapsedTime: moment.utc(0).format('mm:ss.S')
+        currentTime: moment()
       });
     case INCREMENT:
       return Object.assign({}, state, {
-        elapsedTime: moment.utc(moment().diff(state.startTime)).format('mm:ss.S')
+        currentTime: moment()
       });
     case SUBMIT_INPUT:
-      if(state.currentLineIndex === state.lines.length - 1 && state.currentWordIndex === state.words.length - 1) {
+      if(action.isLastLine && action.isLastWord) {
         clearInterval(action.intervalID);
         return Object.assign({}, state, {
           input: '',
           timerIsRunning: false,
           totalWords: state.totalWords + 1,
-          correctWords: state.correctWords + (state.inputMatchesWord ? 1 : 0),
-          get wpm() {
-            return Math.round(60 * this.totalWords / moment.utc(moment().diff(state.startTime)).unix());
-          },
-          get accuracy() {
-            return (100 * this.correctWords / this.totalWords).toFixed(1);
-          }
+          correctWords: state.correctWords + (action.inputMatchesWord ? 1 : 0)
         });
       } else {
         return Object.assign({}, state, {
-          currentLineIndex: state.currentWordIndex === state.words.length - 1 ? state.currentLineIndex + 1 : state.currentLineIndex,
-          get currentLine() {
-            return state.lines[this.currentLineIndex]
-          },
-          get words() {
-            return this.currentLine.split(' ');
-          },
-          currentWordIndex: state.currentWordIndex === state.words.length - 1 ? 0 : state.currentWordIndex + 1,
-          get currentWord() {
-            return this.words[this.currentWordIndex]
-          },
+          currentLineIndex: action.isLastWord ? state.currentLineIndex + 1 : state.currentLineIndex,
+          currentWordIndex: action.isLastWord ? 0 : state.currentWordIndex + 1,
           input: '',
-          get inputMatchesWord() {
-            return this.input === this.currentWord;
-          },
           totalWords: state.totalWords + 1,
-          correctWords: state.correctWords + (state.inputMatchesWord ? 1 : 0)
+          correctWords: state.correctWords + (action.inputMatchesWord ? 1 : 0)
         });
       }
     case GO_TO_OPTIONS:
       clearInterval(action.intervalID);
       return Object.assign({}, state, {
-        lines: [],
+        currentSonnetIndex: null,
+        currentLineIndex: 0,
+        currentWordIndex: 0,
+        input: '',
         timerIsRunning: false,
         startTime: 0,
-        elapsedTime: moment.utc(0).format('mm:ss.S'),
-        correctWords: 0,
-        totalWords: 0
+        totalWords: 0,
+        correctWords: 0
       });
     default:
       return state;

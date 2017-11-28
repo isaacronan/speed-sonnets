@@ -19,10 +19,10 @@ export function fetchSonnets() {
   }
 }
 
-export function selectSonnet(sonnet) {
+export function selectSonnet(index) {
   return {
     type: SELECT_SONNET,
-    sonnet
+    index
   };
 }
 
@@ -50,17 +50,19 @@ export function increment() {
   }
 }
 
-export function submitInput() {
+export function submitInput(inputMatchesWord, isLastWord, isLastLine) {
   return {
     type: SUBMIT_INPUT,
-    intervalID: intervalID
+    intervalID,
+    inputMatchesWord,
+    isLastWord,
+    isLastLine
   };
 }
 
 export function goToOptions() {
-  clearInterval(intervalID);
   return {
     type: GO_TO_OPTIONS,
-    intervalID: intervalID
+    intervalID
   };
 }

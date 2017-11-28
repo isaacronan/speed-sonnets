@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
 
 import { goToOptions } from '../core/actions/actions';
+import { currentSonnetNumeral, currentSonnetLines, previousLines, nextLines, previousWords, currentWord, nextWords, inputMatchesWord } from '../core/selectors/selectors';
 
 class TextDisplay extends React.Component {
 
@@ -13,7 +13,7 @@ class TextDisplay extends React.Component {
   previousLines = () => {
     return (
       <div>
-        {this.props.lines.slice(0, this.props.currentLineIndex).map((line, index) => {
+        {this.props.previousLines.map((line, index) => {
           return <p key={index}>{line}</p>
         })}
       </div>
@@ -23,9 +23,9 @@ class TextDisplay extends React.Component {
   currentLine = () => {
     return (
       <p className="current-line">
-        {this.props.words.slice(0, this.props.currentWordIndex).join(' ')}
-        <b className={this.props.inputMatchesWord ? 'correct': ''}> {this.props.words[this.props.currentWordIndex]} </b>
-        {this.props.words.slice(this.props.currentWordIndex + 1).join(' ')}
+        {this.props.previousWords}
+        <b className={this.props.inputMatchesWord ? 'correct': ''}> {this.props.currentWord} </b>
+        {this.props.nextWords}
       </p>
     )
   }
@@ -33,7 +33,7 @@ class TextDisplay extends React.Component {
   nextLines = () => {
     return (
       <div>
-        {this.props.lines.slice(this.props.currentLineIndex + 1).map((line, index) => {
+        {this.props.nextLines.map((line, index) => {
           return <p key={index}>{line}</p>
         })}
       </div>
@@ -43,7 +43,7 @@ class TextDisplay extends React.Component {
   render() {
     return (
       <div className="text-display">
-        <h1>{`Sonnet ${this.props.sonnetNumber}`}</h1>
+        <h1>{`Sonnet ${this.props.currentSonnetNumeral}`}</h1>
         <button onClick={this.onBackClick}>Back</button>
         {this.previousLines()}
         {this.currentLine()}
@@ -55,12 +55,14 @@ class TextDisplay extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    sonnetNumber: state.sonnetNumber,
-    words: state.words,
-    currentWordIndex: state.currentWordIndex,
-    inputMatchesWord: state.inputMatchesWord,
-    lines: state.lines,
-    currentLineIndex: state.currentLineIndex
+    inputMatchesWord: inputMatchesWord(state),
+    currentSonnetNumeral: currentSonnetNumeral(state),
+    currentSonnetLines: currentSonnetLines(state),
+    previousLines: previousLines(state),
+    nextLines: nextLines(state),
+    previousWords: previousWords(state),
+    currentWord: currentWord(state),
+    nextWords: nextWords(state),
   }
 }
 

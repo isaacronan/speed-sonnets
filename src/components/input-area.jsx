@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { updateInput, submitInput, startTimer } from '../core/actions/actions';
+import { isLastWord, isLastLine, inputMatchesWord, elapsedTime } from '../core/selectors/selectors';
 
 class InputArea extends React.Component {
 
@@ -16,7 +17,7 @@ class InputArea extends React.Component {
     if(event.charCode === 32) {
       event.preventDefault();
       if(this.props.input) {
-        this.props.submitInput();
+        this.props.submitInput(this.props.inputMatchesWord, this.props.isLastWord, this.props.isLastLine);
       }
     }
   }
@@ -39,15 +40,17 @@ const mapStateToProps = state => {
   return {
     input: state.input,
     timerIsRunning: state.timerIsRunning,
-    elapsedTime: state.elapsedTime,
-    inputMatchesWord: state.inputMatchesWord
+    elapsedTime: elapsedTime(state),
+    inputMatchesWord: inputMatchesWord(state),
+    isLastWord: isLastWord(state),
+    isLastLine: isLastLine(state)
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     updateInput: input => dispatch(updateInput(input)),
-    submitInput: () => dispatch(submitInput()),
+    submitInput: (inputMatchesWord, isLastWord, isLastLine) => dispatch(submitInput(inputMatchesWord, isLastWord, isLastLine)),
     startTimer: () => dispatch(startTimer())
   }
 }

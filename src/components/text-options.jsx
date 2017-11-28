@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import { fetchSonnets, selectSonnet } from '../core/actions/actions';
 
 class TextOptions extends React.Component {
 
-  onSonnetClick = (sonnet) => {
-    this.props.selectSonnet(sonnet);
+  onSonnetClick = (index) => {
+    this.props.selectSonnet(index);
   }
 
   componentDidMount() {
@@ -18,7 +19,7 @@ class TextOptions extends React.Component {
         <h1>Choose a sonnet:</h1>
         <ul>
           {this.props.sonnets.map((sonnet, index) => {
-            return <li key={index} onClick={() => this.onSonnetClick(sonnet)}>{sonnet.numeral}</li>
+            return <li key={index} onClick={() => this.onSonnetClick(index)}>{sonnet.numeral}</li>
           })}
         </ul>
       </div>

@@ -7,13 +7,14 @@ import TextOptions from './text-options.jsx';
 import Stats from './stats.jsx';
 
 import { goToOptions } from '../core/actions/actions';
+import { currentSonnetLines } from '../core/selectors/selectors';
 
 class App extends React.Component {
 
   renderContent = () => {
     if(this.props.startTime && !this.props.timerIsRunning) {
       return <Stats />;
-    } else if(this.props.lines.length) {
+    } else if(this.props.currentSonnetLines.length) {
       return (
         <div>
           <TextDisplay />
@@ -36,7 +37,7 @@ class App extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    lines: state.lines,
+    currentSonnetLines: currentSonnetLines(state),
     timerIsRunning: state.timerIsRunning,
     startTime: state.startTime
   }
