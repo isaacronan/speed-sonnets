@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import {
   LOAD_SONNETS,
   SELECT_SONNET,
@@ -6,7 +8,8 @@ import {
   INCREMENT,
   SUBMIT_INPUT,
   GO_TO_OPTIONS } from '../actions/actions';
-import moment from 'moment';
+
+import { inputMatchesWord, isLastWord, isLastLine } from '../selectors/selectors';
 
 let initialState = {
   sonnets: [],
@@ -46,21 +49,21 @@ export function rootReducer(state = initialState, action = {}) {
         currentTime: moment()
       });
     case SUBMIT_INPUT:
-      if(action.isLastLine && action.isLastWord) {
+      if(isLastLine(state) && isLastWord(state)) {
         clearInterval(action.intervalID);
         return Object.assign({}, state, {
           input: '',
           timerIsRunning: false,
           totalWords: state.totalWords + 1,
-          correctWords: state.correctWords + (action.inputMatchesWord ? 1 : 0)
+          correctWords: state.correctWords + (inputMatchesWord(state) ? 1 : 0)
         });
       } else {
         return Object.assign({}, state, {
-          currentLineIndex: action.isLastWord ? state.currentLineIndex + 1 : state.currentLineIndex,
-          currentWordIndex: action.isLastWord ? 0 : state.currentWordIndex + 1,
+          currentLineIndex: isLastWord(state) ? state.currentLineIndex + 1 : state.currentLineIndex,
+          currentWordIndex: isLastWord(state) ? 0 : state.currentWordIndex + 1,
           input: '',
           totalWords: state.totalWords + 1,
-          correctWords: state.correctWords + (action.inputMatchesWord ? 1 : 0)
+          correctWords: state.correctWords + (inputMatchesWord(state) ? 1 : 0)
         });
       }
     case GO_TO_OPTIONS:
